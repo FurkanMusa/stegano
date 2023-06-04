@@ -2,8 +2,8 @@ import sys
 from PIL import Image
 
 
-def decode(imgEncoded):
-    # Decode the secret message from encoded image
+# Decode the secret message from encoded image
+def decodeLSB(imgEncoded):
     # Get the image width and height
     width, height = imgEncoded.size
     # Decode the secret from the image
@@ -43,4 +43,4 @@ if __name__ == '__main__':
 
     imgEncoded = Image.open(imgBase).convert('RGB')
 
-    print("Hidden message was:\n" + decode(imgEncoded))
+    print("Hidden message was:\n" + decodeLSB(imgEncoded))
