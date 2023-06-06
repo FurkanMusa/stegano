@@ -1,2 +1,3 @@
 .idea
-*_ssh.png
+# ignore png files that end with "_ssh.png"
+!*_ssh.png
