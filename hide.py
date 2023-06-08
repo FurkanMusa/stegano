@@ -61,7 +61,6 @@ def pixel_to_stash(img_width, img_height, height, width, rgb_vector):
     return int(stash)
 
 
-# noinspection PyTypeChecker
 def encode(path_to_base_img, secret):
     img = Image.open(path_to_base_img).convert('RGB')
     # Convert the secret to binary
@@ -71,9 +70,8 @@ def encode(path_to_base_img, secret):
     # Get the image szies
     width, height = img.size
 
-    mp.dps = len(secret_binary) + 2  # set number of digits of pi
+    mp.dps = len(secret_binary) * 1.2  # set number of digits of pi
     pi = str(mp.pi)
-    print(pi)
 
     # Encode the secret into the image
     index = 0
@@ -81,7 +79,7 @@ def encode(path_to_base_img, secret):
     pi_step = 2
     for i in range(len(secret_binary)):
         while int(pi[pi_step]) == 0:
-            print("skip zero")
+            # print("skip zero")
             pi_step += 1
         stash = stash + int(pi[pi_step])
 
@@ -93,9 +91,9 @@ def encode(path_to_base_img, secret):
         lsb = secret_binary[index]
         pixel[rgb] = pixel[rgb] & 0b11111110 | int(lsb)
 
-        print("i, pi_step, BIN: " + str(i) + ", " + pi[pi_step] + ", " + secret_binary[index] +
-              " \t| stash >< (x,y)[RGB]: " + str(stash) + " >< (" + str(x) + ", " + str(y) + ")[" + str(rgb) + "]  " +
-              " \t| " + secret_binary[i])
+        # print("i, pi_step, BIN: " + str(i) + ", " + pi[pi_step] + ", " + secret_binary[index] +
+        #       " \t| stash >< (x,y)[RGB]: " + str(stash) + " >< (" + str(x) + ", " + str(y) + ")[" + str(rgb) + "]  " +
+        #       " \t| " + secret_binary[i])
 
         pi_step += 1
         index += 1

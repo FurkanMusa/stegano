@@ -43,20 +43,20 @@ def decode(img_path):
     width, height = img.size
     total_stash = width * height * 3 // 100
 
-    print("Total stash: " + str(total_stash))
-    total_stash = 80
-    mp.dps = total_stash + 20  # set number of digits of pi
+    # print("Total stash: " + str(total_stash))
+    mp.dps = total_stash * 1.2  # set number of digits of pi
     pi = str(mp.pi)
-    print(pi)
+    # print(pi)
 
     # Encode the secret into the image
     index = 0
     stash = 0
     pi_step = 2
     secret_binary = ""
+    secret = ""
     for i in range(total_stash):
         while int(pi[pi_step]) == 0:
-            print("skip zero")
+            # print("skip zero")
             pi_step += 1
         stash = stash + int(pi[pi_step])
 
@@ -71,23 +71,29 @@ def decode(img_path):
         # Decode the LSB from the pixel
         secret_binary += lsb
 
-        print("i, pi_step, BIN: " + str(i) + ", " + pi[pi_step] + ", " + secret_binary[index] +
-              " \t| stash >< (x,y)[RGB]: " + str(stash) + " >< (" + str(x) + ", " + str(y) + ")[" + str(rgb) + "]  " +
-              " \t| " + secret_binary[i])
+        # print("i, pi_step, BIN: " + str(i) + ", " + pi[pi_step] + ", " + secret_binary[index] +
+        #       " \t| stash >< (x,y)[RGB]: " + str(stash) + " >< (" + str(x) + ", " + str(y) + ")[" + str(rgb) + "]  " +
+        #       " \t| " + secret_binary[i] + " | " + secret)
 
         pi_step += 1
         index += 1
 
-    # Convert the binary to string
-    secret = ""
-    for i in range(0, len(secret_binary), 8):
-        # Get the character from binary
-        char = chr(int(secret_binary[i:i + 8], 2))
-        # Check if the character is null
-        if char == '\0':
-            break
-        # Save the character
-        secret += char
+        # Convert the binary to string
+        if len(secret_binary) % 8 == 0:
+            # print(">>>>>>>>>>" + str(secret_binary))
+            # print(">>>>>>>>>>" + str(len(secret_binary)))
+            # print(">>>>>>>>>>" + str(secret_binary[-8:len(secret_binary)]))
+            # print(">>>>>>>>>>" + str(int(secret_binary[-8:len(secret_binary)], 2)))
+            # print(">>>>>>>>>>" + chr(int(secret_binary[-8:len(secret_binary)], 2)))
+
+            value = int(secret_binary[-8:len(secret_binary)], 2)
+            char = chr(value)
+            # Check if the character is null or out of range
+            if char == '\0' or value > 127 or value < 32:
+                break
+            # Save the character
+            secret += char
+
     return secret
 
 
