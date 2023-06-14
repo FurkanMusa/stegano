@@ -61,8 +61,8 @@ def pixel_to_stash(img_width, img_height, height, width, rgb_vector):
     return int(stash)
 
 
-def encode(path_to_base_img, secret):
-    img = Image.open(path_to_base_img).convert('RGB')
+def encode(raw_img_base, secret):
+    img = Image.open(raw_img_base).convert('RGB')
     # Convert the secret to binary
     secret_binary = ''.join(format(ord(i), '08b') for i in secret)
     # print("secretBinary:" + secretBinary)
@@ -101,7 +101,7 @@ def encode(path_to_base_img, secret):
         # Save the pixel value
         img.putpixel((x, y), tuple(pixel))
 
-    new_path = img_path.split('.')[0] + "_ssh." + img_path.split('.')[-1]
+    new_path = raw_img_base.split('.')[0] + "_ssh." + raw_img_base.split('.')[-1]
     img.save(new_path)
     print("Encoded image saved as \"" + new_path + "\".")
     # print("Encoded image saved as \"" + new_path + "\" with the message:\n" + secretMessage)
